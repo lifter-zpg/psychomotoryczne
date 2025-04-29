@@ -32,6 +32,7 @@
             testowy_wiz = new Button();
             StartButton = new Button();
             Tryb_szkoleniowy = new Button();
+            avg_time = new Label();
             SuspendLayout();
             // 
             // label1
@@ -74,11 +75,22 @@
             Tryb_szkoleniowy.UseVisualStyleBackColor = true;
             Tryb_szkoleniowy.Click += Tryb_szkoleniowy_Click;
             // 
+            // avg_time
+            // 
+            avg_time.AutoSize = true;
+            avg_time.Location = new Point(57, 277);
+            avg_time.Name = "avg_time";
+            avg_time.Size = new Size(83, 20);
+            avg_time.TabIndex = 4;
+            avg_time.Text = "Średni czas";
+            avg_time.Click += avg_time_Click;
+            // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(avg_time);
             Controls.Add(Tryb_szkoleniowy);
             Controls.Add(StartButton);
             Controls.Add(testowy_wiz);
@@ -95,5 +107,6 @@
         private Button testowy_wiz;
         private Button StartButton;
         private Button Tryb_szkoleniowy;
+        private Label avg_time;
     }
 }

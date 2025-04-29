@@ -53,6 +53,9 @@ namespace testy_psycho
             resultsLabel.Font = new Font("Arial", 10);
             resultsLabel.Location = new Point(10, 10);
             this.Controls.Add(resultsLabel);
+
+            this.avg_time.Text = "Średni czas: -";
+
             UpdateResultsDisplay();
         }
 
@@ -110,11 +113,16 @@ namespace testy_psycho
             if (testResults.Count == 0)
             {
                 resultsLabel.Text = "Brak wyników testowych.";
+                this.avg_time.Text = "Średni czas: -";
+
             }
             else
             {
                 resultsLabel.Text = "Ostatnie wyniki:\n" +
                     string.Join("\n", testResults.Select((t, i) => $"{i + 1}. {t} ms"));
+
+                long avg = (long)testResults.Average();
+                avg_time.Text = $"Średni czas: {avg} ms";
             }
         }
 
@@ -128,6 +136,11 @@ namespace testy_psycho
         {
             isTrainingMode = false;
             MessageBox.Show("Tryb testowy aktywny.\nWyniki będą zapisywane.");
+        }
+
+        private void avg_time_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
