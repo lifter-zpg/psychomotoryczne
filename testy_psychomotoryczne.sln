@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35919.96
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testy_psychomotoryczne", "testy_psychomotoryczne\testy_psychomotoryczne.csproj", "{7A188F40-C733-4F08-AFE2-0F59C6F49A20}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7A188F40-C733-4F08-AFE2-0F59C6F49A20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A188F40-C733-4F08-AFE2-0F59C6F49A20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A188F40-C733-4F08-AFE2-0F59C6F49A20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A188F40-C733-4F08-AFE2-0F59C6F49A20}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4AB6D0D8-F8E9-40BC-8061-1A25B7A37BEC}
+	EndGlobalSection
+EndGlobal
