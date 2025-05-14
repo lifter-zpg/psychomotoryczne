@@ -12,6 +12,14 @@ namespace testy_psychomotoryczne
             InitializeComponent();
             this.Resize += (s, e) => CenterButtons();
             CenterButtons();
+
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button)
+                {
+                    ((Button)control).TabStop = false;
+                }
+            }
         }
 
         private void CenterButtons()

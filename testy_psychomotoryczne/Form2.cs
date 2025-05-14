@@ -20,6 +20,10 @@ namespace testy_psychomotoryczne
         private List<Label> resultLabels = new List<Label>();
         private List<long> reactionTimes = new List<long>();
         private Bitmap? chartBitmap;
+        private bool waitingForSignal = false;
+        private bool testActive = false;
+        private CancellationTokenSource? cancelTokenSource;
+
 
         public Form2(bool visualTest)
         {
@@ -48,6 +52,14 @@ namespace testy_psychomotoryczne
             foreach (var label in resultLabels)
             {
                 label.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            }
+
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button)
+                {
+                    ((Button)control).TabStop = false;
+                }
             }
 
             ArrangeControls();
@@ -85,15 +97,32 @@ namespace testy_psychomotoryczne
             {
                 resultLabels[i].Location = new Point(20, resultsTop + i * 25);
             }
-
         }
 
         private void Form2_KeyDown(object? sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Space && button3.Enabled)
+            if (e.KeyCode == Keys.Space)
             {
-                button3.PerformClick();
-                e.Handled = true;
+                if (waitingForSignal && testActive)
+                {
+                    stopwatch.Stop();
+                    testActive = false;
+                    waitingForSignal = false;
+                    cancelTokenSource?.Cancel(); // <-- dodaj to
+
+                    MessageBox.Show("FALSTART! Test został przerwany.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    if (isVisualTest)
+                    {
+                        this.BackColor = SystemColors.Control;
+                    }
+                }
+
+                else if (button3.Enabled && testActive)
+                {
+                    button3.PerformClick();
+                    e.Handled = true;
+                }
             }
         }
 
@@ -103,6 +132,7 @@ namespace testy_psychomotoryczne
             testMode = false;
             reactionTimes.Clear();
             pictureBox1.Visible = false;
+            testActive = true;
             await StartReactionTestAsync();
         }
 
@@ -119,11 +149,30 @@ namespace testy_psychomotoryczne
             }
 
             pictureBox1.Visible = false;
+            testActive = true;
             await StartReactionTestAsync();
         }
 
         private async void button3_Click(object sender, EventArgs e)
         {
+            if (waitingForSignal && testActive)
+            {
+                stopwatch.Stop();
+                testActive = false;
+                waitingForSignal = false;
+                cancelTokenSource?.Cancel(); // <-- dodaj to
+
+                MessageBox.Show("FALSTART! Test został przerwany.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                if (isVisualTest)
+                {
+                    this.BackColor = SystemColors.Control;
+                }
+
+                return;
+            }
+
+
             if (stopwatch.IsRunning)
             {
                 stopwatch.Stop();
@@ -151,11 +200,13 @@ namespace testy_psychomotoryczne
                         else
                         {
                             ShowTestResults();
+                            testActive = false;
                         }
                     }
                 }
             }
         }
+
 
         private void ShowTestResults()
         {
@@ -230,9 +281,27 @@ namespace testy_psychomotoryczne
 
         private async Task StartReactionTestAsync()
         {
-            button3.Enabled = false;
+            cancelTokenSource?.Cancel(); // Anuluj poprzedni test, jeśli jeszcze działa
+            cancelTokenSource = new CancellationTokenSource();
+            CancellationToken token = cancelTokenSource.Token;
+
+            button3.Enabled = true;
+            waitingForSignal = true;
+
             int delay = random.Next(2000, 5001);
-            await Task.Delay(delay);
+
+            try
+            {
+                await Task.Delay(delay, token);
+            }
+            catch (TaskCanceledException)
+            {
+                return; // Test został anulowany (np. falstart)
+            }
+
+            if (!testActive || token.IsCancellationRequested) return;
+
+            waitingForSignal = false;
 
             if (isVisualTest)
             {
@@ -246,6 +315,7 @@ namespace testy_psychomotoryczne
             stopwatch.Restart();
             button3.Enabled = true;
         }
+
 
         private void label1_Click(object sender, EventArgs e)
         {

@@ -56,6 +56,14 @@ namespace testy_psychomotoryczne
                 label.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             }
 
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button)
+                {
+                    ((Button)control).TabStop = false;
+                }
+            }
+
             ArrangeControls();
         }
 
