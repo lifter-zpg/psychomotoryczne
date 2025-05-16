@@ -108,7 +108,7 @@ namespace testy_psychomotoryczne
                     stopwatch.Stop();
                     testActive = false;
                     waitingForSignal = false;
-                    cancelTokenSource?.Cancel(); // <-- dodaj to
+                    cancelTokenSource?.Cancel();
 
                     MessageBox.Show("FALSTART! Test został przerwany.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -160,7 +160,7 @@ namespace testy_psychomotoryczne
                 stopwatch.Stop();
                 testActive = false;
                 waitingForSignal = false;
-                cancelTokenSource?.Cancel(); // <-- dodaj to
+                cancelTokenSource?.Cancel();
 
                 MessageBox.Show("FALSTART! Test został przerwany.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -281,7 +281,7 @@ namespace testy_psychomotoryczne
 
         private async Task StartReactionTestAsync()
         {
-            cancelTokenSource?.Cancel(); // Anuluj poprzedni test, jeśli jeszcze działa
+            cancelTokenSource?.Cancel();
             cancelTokenSource = new CancellationTokenSource();
             CancellationToken token = cancelTokenSource.Token;
 
@@ -296,7 +296,7 @@ namespace testy_psychomotoryczne
             }
             catch (TaskCanceledException)
             {
-                return; // Test został anulowany (np. falstart)
+                return;
             }
 
             if (!testActive || token.IsCancellationRequested) return;
